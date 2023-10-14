@@ -1,15 +1,22 @@
 %{
-    int word_count = 0;
-    //this code block allows you to  add the c code to the  lex code .
+#include <stdio.h>
+int word_count = 0;
+int total_size = 0;
 %}
 
+%%
+[a-zA-Z]+ {
+    word_count++;
+    total_size += yyleng;
+}
+[\t\n]+ {
+    // Ignore spaces, tabs, newlines, and other whitespace characters
+}
+. {
+    // Note that the "." is a wildcard that matches all characters except the new line character.
+}
 
 %%
-[a-zA-Z]+  { word_count++; }
-.|\n       ;  // Ignore all other characters
-
-%%
-
 
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -27,6 +34,7 @@ int main(int argc, char** argv) {
     yylex();
 
     printf("Number of words: %d\n", word_count);
+    printf("Total Size : %d bytes\n", total_size);
 
     fclose(yyin);
     return 0;

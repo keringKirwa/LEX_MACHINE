@@ -12,7 +12,7 @@ is|am|are|were|was|be|being|been|do|does|did|will|would|should|can|could|has|hav
     ; //ignore anything that is not a verb.
 }
 
-[\t\n\r\f\v]+ {
+[\t\n]+ {
     // Ignore spaces, tabs, newlines, and other whitespace characters
 }
 
