@@ -1,0 +1,72 @@
+flex word_replacer.lex  
+
+       ----> this will generate a file  by default the 
+file_name.yy.c file (assuming  the file was names  file_name.lex).
+
+gcc -o word_replacer lex.yy.c -lfl  
+
+       =====>   this line of code produces a .out file that is executable .
+
+
+./word_replacer   
+
+        ------>>  runt the .out file .
+
+
+in ubuntu ,  the command that will  combine all the above is : 
+
+ ------------------> flex verb_recognizer.lex && gcc -o verb_rec_lex lex.yy.c -ll && ./verb_rec_lex test_file.txt
+
+
+
+
+
+ *************************************
+
+ %{
+     /* Definition section : define function , variables, structs etc... */
+     #include <stdio.h>
+     int count = 0;
+%}
+
+/* Rule Section : in this section , we can  call the functions and the variables in the Definition section */
+
+
+%%
+\b(is|am|are|were|was|be|being|been|do|does|did|will|would|should|can|could|has|have|had|go)\b {
+    printf("Verb: %s", yytext);
+}
+[[:alpha:]]+ {
+    printf("%s", yytext);
+}
+
+[ \t\n\r\f\v]+ {
+    ; // Ignore spaces, tabs, newlines, and other whitespace characters
+}
+.|\n {
+    ; // Ignore other characters
+}
+  
+%%
+
+//the driver code , this  is the entry of the program , and calls the yylex() funtion that starts the analysis.
+
+int main(int argc, char** argv) {
+    fprintf(stdout, "Reading from <<<< %s Usage : <input_file> : %s \n ", argv[1], argv[0]);
+
+    if (argc != 2) {
+        fprintf(stderr, "ERROR: Please provide the source file. Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+
+    yyin = fopen(argv[1], "r");
+    if (yyin == NULL ) {
+        fprintf(stderr, "Error: Could not open the input file %s.\n", argv[1]);
+        return 1;
+    }
+
+    yylex();
+
+    fclose(yyin);
+    return 0;
+}
